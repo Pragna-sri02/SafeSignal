@@ -1,0 +1,141 @@
+:root {
+  /* ========================================================
+     SafeSignal — Modern Minimalist Purple & Burgundy Theme
+     ======================================================== */
+
+  /* Primary Purple / Royal Amethyst */
+  --color-purple-primary: #7c3aed;
+  --color-purple-dark: #5b21b6;
+  --color-purple-hover: #6d28d9;
+  --color-purple-light: rgba(124, 58, 237, 0.08);
+  --color-purple-muted: #8b5cf6;
+
+  /* Aliased for backward compatibility */
+  --color-violet: #7c3aed;
+  --color-violet-hover: #6d28d9;
+  --color-violet-light: rgba(124, 58, 237, 0.08);
+  --color-violet-muted: #8b5cf6;
+
+  /* Rich Burgundy / Deep Wine / Velvet Mulberry */
+  --color-burgundy: #881337;
+  --color-burgundy-hover: #701a75;
+  --color-burgundy-light: rgba(136, 19, 55, 0.08);
+  --color-burgundy-muted: #9d174d;
+  --color-burgundy-deep: #4c0519;
+
+  /* Secondary / Accent mapping (teal alias maps to burgundy/mulberry for cohesive styling) */
+  --color-teal: #9d174d;
+  --color-teal-hover: #881337;
+  --color-teal-light: rgba(157, 23, 77, 0.09);
+  --color-teal-muted: #be185d;
+
+  /* Signature Modern Minimalist Gradients */
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a21caf 50%, #881337 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #6d28d9 0%, #86198f 50%, #701a75 100%);
+  --gradient-burgundy: linear-gradient(135deg, #881337 0%, #be123c 100%);
+  --gradient-purple: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(136, 19, 55, 0.25));
+  --gradient-subtle: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(136, 19, 55, 0.06) 100%);
+
+  /* Emergency Crimson / Red */
+  --color-emergency-red: #e11d48;
+  --color-emergency-red-hover: #be123c;
+  --color-emergency-light: rgba(225, 29, 72, 0.09);
+
+  --color-warning-amber: #d97706;
+  --color-warning-light: rgba(217, 119, 6, 0.09);
+
+  /* Surfaces & Backgrounds - Modern Minimalist Porcelain */
+  --bg-primary: #faf6fc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f5edf7;
+  --border-color: #ebdfee;
+  --border-subtle: rgba(235, 223, 238, 0.85);
+  --border-focus: #7c3aed;
+
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #f0e6f3;
+
+  --text-primary: #190b24;
+  --text-secondary: #4a3857;
+  --text-muted: #7e698c;
+  --text-inverted: #ffffff;
+
+  /* Ambient Mesh & Glowing Gradients */
+  --ambient-glow-1: radial-gradient(ellipse 70% 45% at 15% 0%, rgba(124, 58, 237, 0.08), transparent 60%);
+  --ambient-glow-2: radial-gradient(ellipse 60% 40% at 85% 10%, rgba(136, 19, 55, 0.07), transparent 60%);
+  --ambient-glow-3: radial-gradient(ellipse 50% 30% at 50% 100%, rgba(162, 28, 175, 0.04), transparent 70%);
+  --security-grid: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px);
+  --security-grid-size: 28px 28px;
+
+  /* Card Glassmorphic & Shadow Effects */
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-blur: blur(14px);
+  --shadow-sm: 0 1px 3px 0 rgba(25, 11, 36, 0.04);
+  --shadow-md: 0 4px 18px -2px rgba(25, 11, 36, 0.06), 0 2px 6px -1px rgba(124, 58, 237, 0.03);
+  --shadow-lg: 0 12px 32px -4px rgba(25, 11, 36, 0.08), 0 4px 12px -2px rgba(136, 19, 55, 0.04);
+  --shadow-sos: 0 0 32px rgba(225, 29, 72, 0.45);
+  --glow-active: 0 0 20px rgba(124, 58, 237, 0.22);
+
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --sidebar-width: 270px;
+  --navbar-height: 68px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+}
+
+[data-theme="dark"] {
+  /* Modern Minimalist Velvet Purple & Burgundy Dark Theme */
+  --bg-primary: #0d0612;
+  --bg-surface: #170b1f;
+  --bg-subtle: #23112f;
+  --border-color: #381a42;
+  --border-subtle: rgba(168, 85, 247, 0.15);
+  --border-focus: #a855f7;
+
+  --sidebar-bg: #120719;
+  --sidebar-border: #281230;
+
+  --text-primary: #fbf7ff;
+  --text-secondary: #e2d3ed;
+  --text-muted: #a491b4;
+  --text-inverted: #0d0612;
+
+  --color-violet: #a78bfa;
+  --color-violet-hover: #8b5cf6;
+  --color-violet-light: rgba(167, 139, 250, 0.14);
+  --color-violet-muted: #c4b5fd;
+
+  --color-burgundy: #f43f5e;
+  --color-burgundy-hover: #e11d48;
+  --color-burgundy-light: rgba(244, 63, 94, 0.14);
+  --color-burgundy-muted: #fb7185;
+
+  --color-teal: #f43f5e;
+  --color-teal-hover: #e11d48;
+  --color-teal-light: rgba(244, 63, 94, 0.14);
+  --color-teal-muted: #fb7185;
+
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #c026d3 50%, #e11d48 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #7c3aed 0%, #a21caf 50%, #be123c 100%);
+  --gradient-burgundy: linear-gradient(135deg, #9d174d 0%, #e11d48 100%);
+  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(244, 63, 94, 0.35));
+
+  --ambient-glow-1: radial-gradient(ellipse 70% 45% at 15% 0%, rgba(139, 92, 246, 0.18), transparent 65%);
+  --ambient-glow-2: radial-gradient(ellipse 60% 40% at 85% 10%, rgba(225, 29, 72, 0.14), transparent 65%);
+  --ambient-glow-3: radial-gradient(ellipse 50% 30% at 50% 100%, rgba(192, 38, 211, 0.10), transparent 70%);
+  --security-grid: radial-gradient(rgba(168, 85, 247, 0.18) 1px, transparent 1px);
+
+  --card-bg: rgba(23, 11, 31, 0.88);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 18px -2px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+  --glow-active: 0 0 24px rgba(168, 85, 247, 0.3);
+}
