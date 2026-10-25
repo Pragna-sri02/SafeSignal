@@ -1,238 +1,276 @@
-# SafeSignal — An AI-Powered Unified Women's Safety Platform
+# 🛡️ SafeSignal — AI-Powered Women's Safety Platform
 
-> **SafeSignal** unites physical emergency response and cyber threat defense into a single, cohesive, modern platform. It combines one-tap SOS workflows, trusted contact dispatch, journey check-ins, guided response playbooks for 8 digital threat categories, encrypted evidence organization, and a Retrieval-Augmented Generation (RAG) conversational assistant grounded strictly in verified Indian emergency and cybercrime resources.
+SafeSignal is an AI-powered women's safety platform that brings **physical safety, digital threat protection, and AI-assisted guidance** together in one application.
 
----
+It helps users access emergency resources, manage trusted contacts, explore digital safety guidance, organize incident information, and ask safety-related questions through an AI assistant powered by Retrieval-Augmented Generation (RAG).
 
-## 1. System Architecture
+## 🎯 Problem Statement
 
-```mermaid
-flowchart TD
-    User["User / Web Browser"] --> Frontend["React + Vite Frontend (Port 5173)"]
-    
-    subgraph Client["Client Application"]
-        Frontend --> AuthState["Supabase Auth / Session State"]
-        Frontend --> SosUI["Emergency SOS & Geolocation"]
-        Frontend --> DigitalUI["Digital Protection Playbooks"]
-        Frontend --> AssistantUI["AI Safety Assistant (RAG)"]
-        Frontend --> EvidenceUI["Evidence Organizer & Vault"]
-    end
+Physical safety concerns and digital threats such as cyberbullying, online harassment, account hacking, impersonation, and misuse of personal images require timely information and appropriate action.
 
-    Frontend --> Backend["FastAPI REST Backend (Port 8000)"]
-    
-    subgraph Server["FastAPI Backend Services"]
-        Backend --> AuthDep["Token Verification Dependency"]
-        Backend --> SosService["Notification & Dispatch Layer"]
-        Backend --> RAGService["RAG Retrieval Engine (FAISS)"]
-        Backend --> GeminiService["Gemini API (google-genai SDK)"]
-        Backend --> EvidenceService["Evidence & Incident Exporter"]
-    end
+However, safety resources are often scattered across different platforms. SafeSignal aims to make these resources more accessible through a unified, user-friendly application.
 
-    subgraph Data["Data & Intelligence Storage"]
-        AuthDep --> SupaPostgres["Supabase PostgreSQL (RLS Protected)"]
-        EvidenceService --> SupaStorage["Supabase Storage (evidence_vault)"]
-        RAGService --> VectorStore["FAISS Vector Index (all-MiniLM-L6-v2)"]
-        VectorStore --> Docs["Trusted Safety Documents (MHA, MeitY, StopNCII)"]
-    end
+## ✨ Key Features
+
+### 🚨 Physical Safety
+- SOS interface with a countdown to reduce accidental activation.
+- Permission-based browser location access.
+- Trusted contact management.
+- Journey safety and check-in workflows.
+- Quick access to India's emergency number, 112.
+
+### 🛡️ Digital Protection Centre
+- Guidance for hacked social media accounts.
+- Cyberbullying and online harassment resources.
+- Fake profiles, impersonation, and deepfake guidance.
+- Support for understanding phishing, threats, and privacy breaches.
+- Evidence preservation recommendations and official reporting resources.
+
+### 🤖 AI Safety Assistant
+- Answers safety-related questions using a RAG pipeline.
+- Retrieves relevant information from a curated knowledge base.
+- Uses Sentence Transformers to generate text embeddings.
+- Uses FAISS for semantic similarity search.
+- Integrates Gemini for AI-generated responses.
+- Displays source references where supported by the implementation.
+
+### 🗂️ Evidence Organizer
+- Organizes incident details and notes.
+- Supports structured incident records.
+- Helps users prepare incident summaries for reporting.
+
+### 👥 Trusted Contacts and Help Directory
+- Access to safety-related contact information.
+- Quick access to official emergency and cybercrime reporting resources.
+
+## ⚙️ How SafeSignal Works
+
+SafeSignal uses a frontend-backend architecture.
+
+1. **User Interface:** Users interact with the application through a React frontend.
+2. **API Communication:** The frontend communicates with the Python FastAPI backend.
+3. **Application Processing:** The backend processes requests and executes the relevant application logic.
+4. **Database Operations:** Supabase provides configured database and authentication services.
+5. **AI Processing:** For safety-related questions, the RAG system retrieves relevant documents and uses the configured Gemini model to generate a response.
+6. **Results:** The backend returns the response, which the frontend displays to the user.
+
+### 🧠 AI and RAG Workflow
+
+```text
+Safety Knowledge Documents
+          ↓
+Text Processing and Chunking
+          ↓
+Sentence Transformers
+          ↓
+Text Embeddings
+          ↓
+FAISS Vector Index
+          ↓
+User Question
+          ↓
+Relevant Document Retrieval
+          ↓
+Retrieved Context + Gemini
+          ↓
+AI-Generated Response
 ```
 
----
+**Why RAG?**
 
-## 2. Technology Stack
+RAG combines information retrieval with language generation. It helps the assistant use relevant content from the project's knowledge base instead of relying only on the language model's general knowledge.
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, JavaScript, React Router v6, Lucide React, CSS Variables Design System |
-| **Backend** | Python 3.12, FastAPI, Uvicorn, Pydantic v2, HTTPX, python-dotenv |
-| **Database & Auth** | Supabase PostgreSQL, Supabase Auth, Row Level Security (RLS) on all user tables |
-| **Storage** | Supabase Storage private bucket (`evidence_vault`) |
-| **AI & RAG** | Official Google GenAI SDK (`google-genai`), Sentence Transformers (`all-MiniLM-L6-v2`), FAISS Vector Index (`faiss-cpu`) |
-| **Testing** | Python Unittest / Pytest for backend, Node.js syntax & component verification for frontend |
+AI-generated answers can still contain errors, so important safety information should be verified using official sources.
 
----
+## 🏗️ System Architecture
 
-## 3. Key Modules & Differentiators
-
-### A. Physical Safety Module
-- **Emergency SOS Workflow**: High-visibility SOS button with a 3-second safeguard countdown to abort accidental activations.
-- **Transparent Location Sharing**: Permission-based browser GPS coordinates (`lat`, `lng`, accuracy). SafeSignal never runs silent background tracking.
-- **Auditable Alert Statuses**: Accurately tracks statuses: `Created`, `Pending`, `Sent`, `Delivered`, `Acknowledged`, `Cancelled`.
-- **Truthful Demo Mode**: Clearly labeled `SOS Demo Mode` when a live commercial SMS/call carrier (e.g. Twilio) is not configured, preventing false rescue assumptions.
-- **Direct 112 Dial**: One-touch dialer for India's Pan-India Emergency Response Support System (`tel:112`).
-- **Journey Safety & Check-ins**: Scheduled destination arrival monitoring with custom check-in reminders (every 10, 15, or 30 min) and overdue escalation.
-
-### B. Digital Protection Centre
-Interactive guided response playbooks with step-by-step checklists, account security actions, evidence preservation rules, official recovery links, and statutory Indian law references across **8 categories**:
-1. **Hacked or Compromised Social Accounts** (Instagram Hacked portal, session revocation, 2FA hardening).
-2. **Cyberbullying & Online Harassment** (Screenshot standards, restrictive muting, IPC 354D).
-3. **Impersonation & Fake Profiles** (Platform ID verification forms, IT Act Section 66D).
-4. **Deepfakes & Image Morphing** (StopNCII.org cryptographic hash prevention, 24-hr takedown under IT Rules 2021).
-5. **Threats, Sextortion & Blackmail** (Cease-communication rules, 1930 financial cyber helpline).
-6. **Privacy Breaches & Unwanted Tracking** (Session audits, stalkerware checks).
-7. **Suspicious Account Activity & Phishing** (Phishing header analysis, credential rotation).
-8. **Misuse of Personal Images** (Non-consensual image takedowns, Section 67A IT Act).
-
-### C. AI Safety Assistant Grounded with RAG
-- Powered by the official `google-genai` Python SDK (`from google import genai`).
-- Embeddings generated via `sentence-transformers/all-MiniLM-L6-v2` and searched via local `FAISS` index.
-- Grounded in official documentation from:
-  - Ministry of Home Affairs (ERSS 112 & National Cybercrime Reporting Portal `cybercrime.gov.in`).
-  - Ministry of Women and Child Development (181 Women Helpline & Sakhi One Stop Centres).
-  - Indian IT Act, 2000 and Indian Penal Code provisions.
-  - Official Meta, Google, and WhatsApp account recovery documentation.
-  - StopNCII.org cryptographic non-consensual image prevention.
-- Clickable verified source badges accompanying answers.
-- **Emergency Keyword Priority**: Immediately detects physical distress (e.g., *"someone is following me"*) and elevates Emergency 112 before RAG retrieval.
-- **Resilient Fallback Mode**: If `GEMINI_API_KEY` is not configured, the assistant utilizes a local grounded template generator using retrieved sources so hackathon demos remain fully functional.
-
-### D. Evidence Organizer & Vault
-- Private record management with categorized search and filtering.
-- Logs incident title, category, timestamps, suspect handles, URLs, and evidence notes.
-- **Export Incident Summary**: Generates a formal, printable plain-text incident summary structured for submission to local police stations or `cybercrime.gov.in` under Section 65B of the Indian Evidence Act.
-
-### E. Trusted Help Directory
-- Pan-India emergency contact directory: **112** (ERSS), **181** (Women Helpline), **1930** (Cyber Fraud), NCW Helpline (7827170170), and iCALL Psychosocial Helpline (9152987821).
-
----
-
-## 4. Windows Setup & Running Instructions
-
-Open PowerShell on Windows and navigate to the project directory:
-
-```powershell
-cd C:\Users\HP\.gemini\antigravity\scratch\SafeSignal
+```text
+           User
+            |
+            v
+     React + Vite
+       Frontend
+            |
+            v
+      FastAPI Backend
+            |
+      +-----+------+
+      |            |
+      v            v
+   Supabase      AI / RAG
+   Database      Pipeline
+   and Auth      |
+                 +-- Sentence Transformers
+                 +-- FAISS
+                 +-- Gemini
 ```
 
-### Terminal 1: Backend Setup & Startup
+## 🧰 Technology Stack
 
-1. **Navigate to the backend folder**:
-   ```powershell
-   cd backend
-   ```
+| Component | Technologies |
+|---|---|
+| Frontend | React, JavaScript, Vite |
+| Routing | React Router |
+| Styling | CSS, CSS Variables |
+| Backend | Python, FastAPI, Uvicorn |
+| Validation | Pydantic |
+| Database | Supabase PostgreSQL |
+| Authentication | Supabase Auth |
+| Database Security | Row Level Security (RLS) |
+| AI Model | Google Gemini |
+| Embeddings | Sentence Transformers |
+| Vector Search | FAISS |
+| Testing | Python unittest, pytest, Node.js |
+| Version Control | Git, GitHub |
 
-2. **Create and activate a Python virtual environment**:
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
-   *(Note: If PowerShell execution policy blocks activation, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` once).*
+## 📁 Project Structure
 
-3. **Install dependencies**:
-   ```powershell
-   pip install -r requirements.txt
-   ```
+```text
+SafeSignal/
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── i18n/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── styles/
+│   ├── tests/
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── app/
+│   │   ├── models/
+│   │   ├── routers/
+│   │   └── services/
+│   ├── rag/
+│   │   ├── documents/
+│   │   ├── ingest.py
+│   │   └── retriever.py
+│   ├── tests/
+│   └── requirements.txt
+│
+├── supabase/
+│   └── migrations/
+│
+├── .gitignore
+└── README.md
+```
 
-4. **Configure Backend Environment**:
-   Copy the example environment file and configure your API keys:
-   ```powershell
-   Copy-Item .env.example .env
-   ```
-   Edit `.env` with your preferred editor:
-   - `GEMINI_API_KEY`: Your Gemini API key from Google AI Studio.
-   - `GEMINI_MODEL`: `gemini-2.5-flash` (or your available model).
-   - `SUPABASE_URL` and `SUPABASE_ANON_KEY`: Your Supabase project keys.
+## 💻 Installation and Setup
 
-5. **Run RAG Document Ingestion**:
-   ```powershell
-   python rag/ingest.py
-   ```
-   *(This builds the 37-chunk FAISS vector index from `rag/documents/`).*
+### Prerequisites
 
-6. **Start the FastAPI Backend**:
-   ```powershell
-   uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-   ```
-   - API will be accessible at: `http://localhost:8000`
-   - Interactive Swagger API Docs at: `http://localhost:8000/docs`
+Install:
+- Python 3.12 or a compatible version.
+- Node.js and npm.
+- Git.
+- A Supabase project.
+- A Gemini API key for Gemini-powered responses.
 
----
+### 1. Clone the repository
 
-### Terminal 2: Frontend Setup & Startup
+```bash
+git clone https://github.com/Pragna-sri02/SafeSignal.git
+cd SafeSignal
+```
 
-1. **Open a new PowerShell terminal and navigate to the frontend folder**:
-   ```powershell
-   cd C:\Users\HP\.gemini\antigravity\scratch\SafeSignal\frontend
-   ```
+### 2. Set up the backend
 
-2. **Configure Frontend Environment**:
-   ```powershell
-   Copy-Item .env.example .env.local
-   ```
-
-3. **Install Node.js dependencies**:
-   ```powershell
-   npm.cmd install
-   ```
-
-4. **Start the Vite development server**:
-   ```powershell
-   npm.cmd run dev
-   ```
-   - Open your browser at: `http://localhost:5173`
-
----
-
-## 5. Supabase Database & Security Setup
-
-1. Create a free project at [supabase.com](https://supabase.com).
-2. Open the **SQL Editor** in your Supabase dashboard.
-3. Run `supabase/migrations/001_initial_schema.sql` to generate:
-   - `profiles`, `trusted_contacts`, `safety_incidents`, `journey_checkins`, `evidence_records`, `notification_events`.
-4. Run `supabase/migrations/002_rls_policies.sql` to enable **Row Level Security (RLS)** and restrict all data operations to `auth.uid() = user_id`.
-5. Under **Storage**, ensure the private bucket `evidence_vault` is present.
-
----
-
-## 6. Running Tests
-
-### Backend Unit Tests
 ```powershell
 cd backend
-python tests/run_tests.py
-# Or with pytest:
-pytest tests -v
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
 ```
 
-### Frontend Syntax & Component Integrity Checks
+Configure the required backend environment variables in `backend/.env`.
+
+### 3. Set up the frontend
+
+Open a second terminal from the project root.
+
 ```powershell
 cd frontend
-node tests/validate_syntax.cjs
+npm install
+Copy-Item .env.example .env.local
 ```
 
+Configure the required frontend environment variables in `frontend/.env.local`.
+
+**Security:** Never commit real `.env` files or expose private API keys in frontend code.
+
+### 4. Configure Supabase
+
+1. Create a project in Supabase.
+2. Open the SQL Editor.
+3. Run `supabase/migrations/001_initial_schema.sql`.
+4. Run `supabase/migrations/002_rls_policies.sql`.
+5. Configure the storage bucket and access permissions required by the application.
+
+### 5. Build the RAG index
+
+From the `backend` directory, run:
+
+```powershell
+python rag/ingest.py
+```
+
+Ensure the ingestion and retrieval components use the same configured index location.
+
+### 6. Start the backend
+
+From the `backend` directory:
+
+```powershell
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Backend API: `http://localhost:8000`
+
+API documentation: `http://localhost:8000/docs`
+
+### 7. Start the frontend
+
+From the `frontend` directory, in a separate terminal:
+
+```powershell
+npm run dev
+```
+
+Open `http://localhost:5173` in your browser.
+
+## 🔒 Security and Limitations
+
+- Location access depends on user permission and browser support.
+- Database security depends on correctly configured authentication and access policies.
+- AI responses may be inaccurate and should not replace official safety guidance.
+- Emergency notification delivery requires appropriate integrations and successful delivery confirmation.
+- Production deployment requires secure environment variables, correct API URLs, and appropriate database and storage permissions.
+
+**Emergency notice:** SafeSignal is a safety-support application, not an emergency response service. If you are in immediate danger in India, contact **112** directly.
+
+## 🚀 Future Enhancements
+
+- Production deployment and monitoring.
+- Improved AI response evaluation.
+- Expanded multilingual support.
+- Additional automated and integration tests.
+- Enhanced notification integrations.
+- Further privacy and security improvements.
+
+## 👩‍💻 Project Information
+
+**Project Name:** SafeSignal
+
+**Category:** Artificial Intelligence | Women's Safety | Cybersecurity
+
+**Repository:** [GitHub — SafeSignal](https://github.com/Pragna-sri02/SafeSignal)
+
+**Core Technologies:** React, Vite, Python, FastAPI, Supabase, Sentence Transformers, FAISS, and Gemini.
+
 ---
 
-## 7. Hackathon End-to-End Demonstration Flow
-
-To demonstrate SafeSignal to hackathon judges in 3–5 minutes:
-
-1. **Landing Page**:
-   - Open `http://localhost:5173`.
-   - Point out the top emergency helpline banner (112, 181, 1930) and the two safety pillars: Physical & Digital.
-2. **Instant Demo Login**:
-   - Click **"Launch Live Demo Mode"** on the hero banner.
-   - Shows instant access as verified user *Priya Sharma* without waiting for email verification.
-3. **Physical Safety & SOS**:
-   - Click the prominent **ACTIVATE SOS** button.
-   - Observe the 3-second countdown safeguard.
-   - Watch the active incident banner appear with coordinates and simulated notification dispatches to trusted contacts *Aarav Sharma* and *Ananya Verma*.
-   - Click **Cancel SOS / False Alarm** to demonstrate graceful, safe cancellation.
-4. **Digital Protection Centre**:
-   - Navigate to **Digital Protection** in the sidebar.
-   - Select **"Deepfakes & Image Morphing"** or **"Hacked Social Media Account"**.
-   - Review the step-by-step checklist, StopNCII.org integration guidance, and click **"Log in Evidence Vault"** to pre-fill an incident.
-5. **AI Safety Assistant (RAG Grounding)**:
-   - Navigate to **AI Safety Assistant**.
-   - Click suggested chip: *"Someone created a fake profile using my photos. What should I do?"*
-   - Show how the AI response delivers verified steps and displays clickable source citations linking directly to official documentation.
-   - Type *"Help me someone is following me right now"* to demonstrate the immediate physical threat emergency override.
-6. **Evidence Organizer**:
-   - Navigate to **Evidence Organizer**.
-   - Click **"Export Summary"** on any record to instantly download a formal, timestamped legal summary ready for submission to `cybercrime.gov.in`.
-
----
-
-## 8. Responsible AI & Safety Disclaimers
-
-- **Never a Substitute for 112**: SafeSignal assists in crisis response, but users in active physical danger are always urged to call emergency services immediately.
-- **Truthful Status Reporting**: SafeSignal never claims emergency services have been dispatched unless confirmed by an integrated authority API.
-- **Section 65B Compliance**: Incident records generated in the Evidence Vault organize digital data for reporting; formal judicial admissibility in India requires the appropriate Section 65B certificate.
+*SafeSignal aims to make physical safety resources, digital protection guidance, and AI-assisted information more accessible through a unified platform.*
